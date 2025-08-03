@@ -1,0 +1,17 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --allow-env --env --allow-net --allow-read src/main.ts"
+  },
+  "imports": {
+    "@hono/hono": "jsr:@hono/hono@^4.8.12",
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "deploy": {
+    "project": "c516c9d5-199d-41bc-a4e2-07fb2284d911",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "src\\main.ts"
+  }
+}

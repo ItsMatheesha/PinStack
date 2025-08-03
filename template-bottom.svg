@@ -1,0 +1,11 @@
+<g transform="translate(0, 92)">
+            <rect width="8" height="8" rx="100" fill="${lang_color}" />
+            <g transform="translate(15, 8)">
+                <text fill="#9198a1" font-size="12px">${top_lang}</text>
+                <!-- <g transform="translate(65, -2)">
+                    <text fill="#9198a1">.</text>
+                </g> -->
+            </g>
+        </g>
+    </g>
+</svg>

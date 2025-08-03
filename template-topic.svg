@@ -1,0 +1,7 @@
+        <!-- Tag ${num} -->
+        <g transform="translate(${lm}, 55)">
+            <rect width="${tw}" height="22" fill="#388bfd1a" rx="12" />
+            <g transform="translate(8, 15)">
+                <text fill="#4493f8" font-size="12px">${topic}</text>
+            </g>
+        </g>
