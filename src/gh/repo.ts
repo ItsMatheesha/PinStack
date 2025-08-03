@@ -39,7 +39,22 @@ function escapeXml(unsafe: string) {
 
 export default function getRepo(app: Hono) {
   app.get('/gh/repo/:owner/:repo', async (c) => {
+    //get the owner and the repo name from the url
     const { owner, repo } = c.req.param()
+    //get the theme parameter from the url
+    const theme = c.req.query('theme') ?? 'dark'
+    //set the text and bg color according to theme parameter
+    let tcolor = ''
+    let bgcolor = ''
+
+    if (theme == 'dark') {
+      tcolor = '#ffffff'
+      bgcolor = '#0d1117'
+    } else if (theme == 'light') {
+      tcolor = '#000000'
+      bgcolor = '#ffffff'
+    }
+    //get the repo details
     const repo_req = await fetch(`${api}${owner}/${repo}`, {
       headers: {
         'User-Agent': 'ghpin - @ItsMatheesha[Github]',
@@ -50,13 +65,14 @@ export default function getRepo(app: Hono) {
     if (!repo_req.ok) {
       const error_svg = (await Deno.readTextFile('./notFound.svg'))
       return c.text(error_svg, 200, {
-      'Content-Type': 'image/svg+xml',
-    })
+        'Content-Type': 'image/svg+xml',
+      })
     }
     let top_lang
     let lang_color
+    //get the language details of repo
     const lang_req = await fetch(`${api}${owner}/${repo}/languages`)
-
+    //set language color for the top language
     if (!lang_req.ok) {
       lang_color = "#ccc"
     } else {
@@ -81,9 +97,13 @@ export default function getRepo(app: Hono) {
       .replace(/\$\{repo\}/g, repo)
       //repo description
       .replace(/\$\{des\}/g, des.length > 50 ? des.slice(0, 57) + '...' : des)
+      //set bg color of the svg
+      .replace(/\$\{bgcolor\}/g, bgcolor)
+      //set text color of the svg
+      .replace(/\$\{tcolor\}/g, tcolor)
     let svg_topic = ''
     let pw = 0
-    //add upto 5 topics 
+    //add upto 4 topics to the svg
     for (let i = 0; i < topics.length; i++) {
       const temp = Math.floor(12 * 0.5)
       const tw = temp * topics[i].length
@@ -98,7 +118,7 @@ export default function getRepo(app: Hono) {
         //topic text
         .replace(/\$\{topic\}/g, topics[i])
 
-        pw += tw + 20
+      pw += tw + 20
     }
     const svg_btm = (await Deno.readTextFile('./template-bottom.svg'))
       //color of the top language

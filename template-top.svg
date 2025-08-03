@@ -1,5 +1,5 @@
 <svg width="400" height="135" font-family="Segoe UI" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100%" height="100%" fill="#0d1117" rx="6" stroke="#30363d" stroke-width="1" />
+    <rect width="100%" height="100%" fill="${bgcolor}" rx="6" stroke="#30363d" stroke-width="1" />
     <g transform="translate(16, 16)">
         <clipPath id="avatar-clip">
             <rect width="20px" height="20px" rx="4px" />
@@ -15,5 +15,5 @@
             </a>
         </g>
         <g transform="translate(-10)">
-            <text x="10" y="40" class="small" fill="white" font-size="14px">${des}</text>
+            <text x="10" y="40" class="small" fill="${tcolor}" font-size="14px">${des}</text>
         </g>
