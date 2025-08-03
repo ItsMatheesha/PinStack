@@ -1,3 +1,4 @@
 test.http
 deno.lock
 .env
+.vscode

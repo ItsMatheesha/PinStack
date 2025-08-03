@@ -48,7 +48,10 @@ export default function getRepo(app: Hono) {
     })
     //if the api request failed
     if (!repo_req.ok) {
-      return c.text('Repository not found', 404)
+      const error_svg = (await Deno.readTextFile('./notFound.svg'))
+      return c.text(error_svg, 200, {
+      'Content-Type': 'image/svg+xml',
+    })
     }
     let top_lang
     let lang_color
