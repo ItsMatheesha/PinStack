@@ -1,43 +1,10 @@
 import { Hono } from '@hono/hono'
+import { escapeXml, getLangColor, topLang } from "../../functions.ts";
 
 const api = 'https://api.github.com/repos/'
 const key = Deno.env.get('GH_TOKEN')
 
-//read the languages file for colours
-const langs = JSON.parse(await Deno.readTextFile('./languages.json'))
-
-function topLang(languages: Record<string, number>): string {
-  let topLang = 'Unknown'
-  let maxBytes = 0
-
-  for (const lang in languages) {
-    if (languages[lang] > maxBytes) {
-      maxBytes = languages[lang]
-      topLang = lang
-    }
-  }
-
-  return topLang
-}
-
-const getLangColor = (lang: string): string => {
-  return langs[lang]?.color || '#ccc'
-}
-
-function escapeXml(unsafe: string) {
-  return unsafe.replace(/[<>&'"]/g, (c) => {
-    switch (c) {
-      case '<': return '&lt;'
-      case '>': return '&gt;'
-      case '&': return '&amp;'
-      case '\'': return '&apos;'
-      case '"': return '&quot;'
-      default: return c
-    }
-  })
-}
-
-export default function getRepo(app: Hono) {
+export default function getGhRepo(app: Hono) {
   app.get('/gh/repo/:owner/:repo', async (c) => {
     //get the owner and the repo name from the url
     const { owner, repo } = c.req.param()
@@ -57,13 +24,13 @@ export default function getRepo(app: Hono) {
     //get the repo details
     const repo_req = await fetch(`${api}${owner}/${repo}`, {
       headers: {
-        'User-Agent': 'ghpin - @ItsMatheesha[Github]',
+        'User-Agent': 'PinStack - @ItsMatheesha[Github]',
         'Authorization': `Bearer ${key}`
       }
     })
     //if the api request failed
     if (!repo_req.ok) {
-      const error_svg = (await Deno.readTextFile('./notFound.svg'))
+      const error_svg = (await Deno.readTextFile('./src/error.svg'))
       return c.text(error_svg, 200, {
         'Content-Type': 'image/svg+xml',
       })
@@ -88,7 +55,7 @@ export default function getRepo(app: Hono) {
 
     const avatarReq = await fetch(data.owner.avatar_url)
     const avatarBuff = new Uint8Array(await avatarReq.arrayBuffer())
-    const svg_top = (await Deno.readTextFile('./template-top.svg'))
+    const svg_top = (await Deno.readTextFile('./src/gh/repo/ghRepo-top.svg'))
       //avatar of the owner
       .replace(/\$\{owner_avatar\}/g, escapeXml(`data:image/png;base64,${btoa(String.fromCharCode(...avatarBuff))}`))
       //owners username
@@ -108,7 +75,7 @@ export default function getRepo(app: Hono) {
       const temp = Math.floor(12 * 0.5)
       const tw = temp * topics[i].length
 
-      svg_topic = svg_topic + (await Deno.readTextFile('./template-topic.svg'))
+      svg_topic = svg_topic + (await Deno.readTextFile('./src/gh/repo/ghRepo-topic.svg'))
         //topic number
         .replace(/\$\{num\}/g, (i + 1).toString())
         //left margin of a topic
@@ -120,7 +87,7 @@ export default function getRepo(app: Hono) {
 
       pw += tw + 20
     }
-    const svg_btm = (await Deno.readTextFile('./template-bottom.svg'))
+    const svg_btm = (await Deno.readTextFile('./src/gh/repo/ghRepo-btm.svg'))
       //color of the top language
       .replace(/\$\{lang_color\}/g, lang_color)
       //top language
