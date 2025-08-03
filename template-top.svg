@@ -10,8 +10,7 @@
         <g transform="translate(18, -4)">
             <a href="https://github.com/${owner}/${repo}">
                 <text x="10" y="20" class="title" fill="#4493f8">
-                    <tspan font-size="16px">${owner}/</tspan>
-                    <tspan font-weight="bold" font-size="16px">${repo}</tspan>
+                    <tspan font-size="16px">${owner}/</tspan><tspan font-weight="bold" font-size="16px">${repo}</tspan>
                 </text>
             </a>
         </g>
