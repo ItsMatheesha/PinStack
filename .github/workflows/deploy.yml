@@ -31,9 +31,6 @@ jobs:
       - name: Install step
         run: "deno i"
 
-      - name: Build step
-        run: "deno run prod"
-
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
