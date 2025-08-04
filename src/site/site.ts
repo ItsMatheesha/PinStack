@@ -9,7 +9,12 @@ export default function getSiteSs(app: Hono) {
             return c.text('Missing url parameter', 400);
         }
 
-        const ss = await takeScreenshot(url);
+        let ss
+        try {
+            ss = await takeScreenshot(url);
+        } catch (e) {
+            return c.text(`Error taking screenshot: ${e}`, 500);
+        }
 
         const svgString = typeof ss === 'string' ? ss : new TextDecoder().decode(new Uint8Array(ss));
         return c.text(svgString, 200, {
