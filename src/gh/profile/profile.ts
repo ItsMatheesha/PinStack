@@ -16,21 +16,21 @@ export default function getGhprofile(app: Hono) {
             }
         })
 
-        if(!profile_req.ok){
-            return c.text('Profile not', 404)
+        if (!profile_req.ok) {
+            return c.text('Profile not found', 404)
         }
         const user = await profile_req.json()
 
-        const svg_profile = (await Deno.readTextFile('./src/gh/profile/profile.svg'))
-        .replace(/\$\{avatar\}/g, escapeXml(user.avatar_url ?? ''))
-        .replace(/\$\{name\}/g, escapeXml(user.name ?? 'Unknown'))
-        .replace(/\$\{username\}/g, escapeXml(user.login ?? 'Unknown'))
-        .replace(/\$\{followers\}/g, formatNumber(user.followers ?? 'NaN'))
-        .replace(/\$\{location\}/g, escapeXml(user.location ?? 'Unknown'))
-        .replace(/\$\{des\}/g, escapeXml(user.bio ?? 'Unknown'))
+        const svg_profile = (await Deno.readTextFile('./src/gh/profile/templates/profile.svg'))
+            .replace(/\$\{avatar\}/g, escapeXml(user.avatar_url ?? ''))
+            .replace(/\$\{name\}/g, escapeXml(user.name ?? 'Unknown'))
+            .replace(/\$\{username\}/g, escapeXml(user.login ?? 'Unknown'))
+            .replace(/\$\{followers\}/g, formatNumber(user.followers ?? 'NaN'))
+            .replace(/\$\{location\}/g, escapeXml(user.location ?? 'Unknown'))
+            .replace(/\$\{des\}/g, escapeXml(user.bio ?? 'Unknown'))
 
         return c.text(svg_profile, 200, {
-      'Content-Type': 'image/svg+xml',
-    })
+            'Content-Type': 'image/svg+xml',
+        })
     })
 }

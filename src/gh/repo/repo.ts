@@ -30,7 +30,7 @@ export default function getGhRepo(app: Hono) {
     })
     //if the api request failed
     if (!repo_req.ok) {
-      const error_svg = (await Deno.readTextFile('./src/error.svg'))
+      const error_svg = (await Deno.readTextFile('./src/templates/error.svg'))
       return c.text(error_svg, 200, {
         'Content-Type': 'image/svg+xml',
       })
@@ -55,7 +55,7 @@ export default function getGhRepo(app: Hono) {
 
     const avatarReq = await fetch(data.owner.avatar_url)
     const avatarBuff = new Uint8Array(await avatarReq.arrayBuffer())
-    const svg_top = (await Deno.readTextFile('./src/gh/repo/ghRepo-top.svg'))
+    const svg_top = (await Deno.readTextFile('./src/gh/repo/templates/ghRepo-top.svg'))
       //avatar of the owner
       .replace(/\$\{owner_avatar\}/g, escapeXml(`data:image/png;base64,${btoa(String.fromCharCode(...avatarBuff))}`))
       //owners username
@@ -75,7 +75,7 @@ export default function getGhRepo(app: Hono) {
       const temp = Math.floor(12 * 0.5)
       const tw = temp * topics[i].length
 
-      svg_topic = svg_topic + (await Deno.readTextFile('./src/gh/repo/ghRepo-topic.svg'))
+      svg_topic = svg_topic + (await Deno.readTextFile('./src/gh/repo/templates/ghRepo-topic.svg'))
         //topic number
         .replace(/\$\{num\}/g, (i + 1).toString())
         //left margin of a topic
@@ -87,7 +87,7 @@ export default function getGhRepo(app: Hono) {
 
       pw += tw + 20
     }
-    const svg_btm = (await Deno.readTextFile('./src/gh/repo/ghRepo-btm.svg'))
+    const svg_btm = (await Deno.readTextFile('./src/gh/repo/templates/ghRepo-btm.svg'))
       //color of the top language
       .replace(/\$\{lang_color\}/g, lang_color)
       //top language
