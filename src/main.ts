@@ -7,6 +7,8 @@ import getSiteSs from "./site/site.ts";
 const app = new Hono()
 //set the port for the servers
 const PORT = Number(Deno.env.get('PORT')) || 3000
+
+Deno.env.set("ASTRAL_CACHE_DIR", "src/.cache/astral");
 //github repo api
 getGhRepo(app)
 //github profile api
