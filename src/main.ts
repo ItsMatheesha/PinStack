@@ -1,6 +1,7 @@
 import { Hono } from '@hono/hono'
 import getGhRepo from "./gh/repo/repo.ts";
 import getGhprofile from "./gh/profile/profile.ts";
+import getSiteSs from "./site/site.ts";
 
 
 const app = new Hono()
@@ -10,6 +11,8 @@ const PORT = Number(Deno.env.get('PORT')) || 3000
 getGhRepo(app)
 //github profile api
 getGhprofile(app)
+//get site screenshot
+getSiteSs(app)
 
 app.notFound((c) => {
   return c.text('Invalid api request!')
