@@ -1,6 +1,6 @@
 import { Hono } from '@hono/hono'
-import getGhRepo from "./gh/repo/repo.ts";
-import getGhprofile from "./gh/profile/profile.ts";
+import getGhRepo from "./gh/repo/script.ts";
+import getGhprofile from "./gh/profile/script.ts";
 
 
 const app = new Hono()
